@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="description" content="Mine Versions">
+
+    <style>
+        body {
+            font-family: sans-serif;
+            color: #333;
+        }
+
+        .note {
+            background:#eee; border-left:solid 3px cornflowerblue;
+            padding: 1em;
+            border-radius: 2px;
+            margin-top: 0.5em;
+        }
+
+        .note pre {
+            display: inline
+        }
+
+        .failed {
+            background: rgba(150, 0, 50, 0.1);
+            padding: 1em;
+            border-left: solid 3px firebrick;
+        }
+
+        main {
+            display: flex;
+            flex-grow: 1;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        table {
+            margin: 1em;
+        }
+
+        table tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #111
+        }
+
+        td {
+            padding: 0.1em 2em
+        }
+
+        a {
+            color: #222;
+        }
+
+        a:hover {
+            background-color: rgba(255, 255, 0, 0.1)
+        }
+
+        a:visited {
+            color: rgb(80, 0, 80)
+        }
+
+        table a {
+            display: block;
+        }
+
+        h1 {text-align:center; background-color:#447; color: #fff; padding:0.5em}
+    </style>
+</head>
+
+<body>
+    <h1>InterMine version checker</h1>
+    <main>
+        <table>
+            <th>Mine</th>
+            <th>InterMine Version</th>
+            <tbody id="mineList"></tbody>
+        </table>
+        <div class="statuses">
+            <div class="note failed"> Failed to load:
+                <ul id="poorlymines"></ul>
+            </div>
+            <div class="note">Note: Mines prior to 1.6.6 had no <pre>/version/intermine</pre> method and consequently return the <pre>/version</pre> default method instead.</div>
+            <div class="note">To add or remove a mine, add it to to the mines array here: <a href="https://github.com/intermine/mineversions/">https://github.com/intermine/mineversions/</a></div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script>
+        var mines = [
+            ["FlyMine", 'http://www.flymine.org/query'],
+            ["HumanMine", 'http://www.humanmine.org/humanmine'],
+            ["MouseMine", 'http://www.mousemine.org/mousemine'],
+            ["YeastMine", 'http://yeastmine.yeastgenome.org/yeastmine'],
+            ["YeastMine Dev" , 'http://yeastmine-test-aws.yeastgenome.org/yeastmine-dev/'],
+            ["ZebrafishMine", 'http://www.zebrafishmine.org/'],
+            ["WormMine", 'http://intermine.wormbase.org/tools/wormmine'],
+            ["SoyMine", 'http://mines.legumeinfo.org/soymine'],
+            ["BeanMine", 'http://mines.legumeinfo.org/beanmine'],
+            ["MedicMine", 'http://medicmine.jcvi.org/medicmine'],
+            ["PeanutMine", 'http://mines.legumeinfo.org/peanutmine'],
+            ["LegumeMine", 'https://intermine.legumefederation.org/legumemine'],
+            ["RatMine", 'http://ratmine.mcw.edu/ratmine'],
+            ["Wheat3BMine", 'http://urgi.versailles.inra.fr/Wheat3BMine'],
+            ["RepetDB", 'http://urgi.versailles.inra.fr/repetdb'],
+            ["ThaleMine", 'https://apps.araport.org/thalemine'],
+            ["BovineMine", 'http://bovinegenome.org/bovinemine'],
+            ["PhytoMine", 'https://phytozome.jgi.doe.gov/phytomine'],
+            ["FlyTF", 'http://www.flytf.org/flytfmine'],
+            ["HymenopteraMine", 'http://hymenopteragenome.org/hymenopteramine'],
+            ["Mitominer", 'http://mitominer.mrc-mbu.cam.ac.uk/release-4.0'],
+            ["TargetMine", 'http://targetmine.mizuguchilab.org/targetmine'],
+            ["ToxoMine", 'http://toxomine.org/beta/'],
+            ["INDIGO", "http://www.cbrc.kaust.edu.sa/indigo"],
+            ["Shaare", "http://www.shaare.org.uk/release-1.0"],
+            ["XenMine", "http://www.xenmine.org/xenmine"],
+            ["GrapeMine", "http://urgi.versailles.inra.fr/GrapeMine"],
+            ["PlanMine", "http://planmine.mpi-cbg.de/planmine"],
+            ["TetraMine", "http://adenine.bradley.edu/tetramine"],
+            ["modMine", "http://intermine.modencode.org/release-33"]
+
+        ];
+        var display = document.getElementById("mineList");
+        var errors = document.getElementById("poorlymines");
+
+
+        mines.map(function(mine) {
+            var mineName = mine[0],
+                mineLink = mine[1],
+                mineUrl = mineLink + "/service";
+            $.ajax(mineUrl + "/version/intermine").done(function(response) {
+                display.innerHTML += "<tr><td><a href='" + mineLink + "'>" + mineName +
+                    "</a></td><td>" + response +
+                    "</td></tr>";
+            }).fail(function(response) {
+                errors.innerHTML += "<li><a href='" + mineLink + "'>" + mineName +
+                    ":</a> " + response.statusText + "</li>";
+            });
+
+        });
+    </script>
+</body>
+
+</html>
