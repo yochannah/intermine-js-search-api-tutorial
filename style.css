@@ -33,3 +33,5 @@ a:visited {
 h1 {text-align:center; background-color:rgb(139,195,74); color: #fff; padding:0.5em; text-shadow:1px 1px 1px rgba(0,0,0,0.1); border-radius:2px;}
 
 #searchForm {width:50%;}
+
+.result {padding:0.5em 1em;}
