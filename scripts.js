@@ -64,7 +64,7 @@ var mines = { FlyMine: { name: 'FlyMine', url: 'http://www.flymine.org/query' },
      url: 'http://intermine.modencode.org/release-33' } };
 
 
-var mineToQuery = mines.FlyMine;
+var mineToQuery = mines.HumanMine;
 
 //find the searchform
 var searchForm = document.getElementById("searchForm");
@@ -84,11 +84,15 @@ searchForm.addEventListener("submit", function(event){
     //get the HTML element where we'll put the results:
     var resultsBox = document.getElementById("results");
 
+    //clear out the old results (if any)
+    resultsBox.innerHTML = "";
+
     //go over the fields for the results and output them to the screen
     response.results.map(function(singleResult) {
-      //here we're adding one div row per result, and highlighting the result type in bold. 
+      //here we're adding one div row per result, and highlighting the result type in bold.
       resultsBox.innerHTML += "<div class='result'>"
       + "<strong>" + singleResult.type + ": </strong>"
+      //output all the results in the "fields" section of the json:
       + JSON.stringify(singleResult.fields)
       + "</div>"
     });
