@@ -93,8 +93,21 @@ searchForm.addEventListener("submit", function(event){
       resultsBox.innerHTML += "<div class='result'>"
       + "<strong>" + singleResult.type + ": </strong>"
       //output all the results in the "fields" section of the json:
-      + JSON.stringify(singleResult.fields)
+    //  + JSON.stringify(singleResult.fields)
+      + fieldsList(singleResult.fields)
       + "</div>"
     });
   });
 });
+
+function fieldsList(fields){
+  console.log('fields', fields);
+  var fieldsHTML = "<ul>";
+  for (var key in fields) {
+    console.log (key, fields[key]);
+    var value = fields[key];
+    fieldsHTML = fieldsHTML + "<li> "
+      + "<strong>" + key + ":</strong> " + value + "</li>";
+  };
+  return fieldsHTML + "</ul>";
+}
